@@ -10,6 +10,11 @@ public class Driver {
     
     public static void main(String argv[]){
         
+        Interpreter interpreter = new Interpreter();
+        
+        
+        interpreter.setInputFileName("input.lisp");
+        interpreter.run();
         
         
     }

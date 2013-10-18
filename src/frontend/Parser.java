@@ -11,4 +11,8 @@ package frontend;
 public class Parser
 {
 
+    public static void parseFile(String inputFileName) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
 }

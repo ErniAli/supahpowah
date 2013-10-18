@@ -1,6 +1,7 @@
 package backend;
 
-import java.io.*;
+
+import java.io.FileNotFoundException;
 import middlelayer.*;
 
 /**
@@ -33,23 +34,13 @@ public class Interpreter {
      * Run the interpreter on the given input file.
      */
     public void run(){
-        
-        if(this.inputFileName==null){
-            System.out.println("No input file given");
+        String files = "";
+        try{
+            files = MidLayerControl.getMidLayerObjectFileNames(inputFileName);
+        }catch(FileNotFoundException ex){
+            System.out.println("Error: " + ex.getMessage());
         }
-        
-        File f = new File(inputFileName);
-        if(!f.exists()){
-            System.out.println("No input file given");
-        }
-        
-        //The timestamp can be used to check when the file was last modified
-        //If it has not been modified since the last time the interpreter was
-        //run, just use the same files that that were used last time
-        long timestamp = f.lastModified();
-        
-        File ctFile = MidLayerControl.getCodeTreeFile(inputFileName, timestamp);
-        File stFile = MidLayerControl.getSymbolTableFile(inputFileName, timestamp);
+        System.out.println(files);//this is to test to be sure it is working...
         
         //From here, manipulate the code tree and symbol table
     }
