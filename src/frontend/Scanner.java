@@ -160,12 +160,12 @@ public class Scanner
       }
       else if (Character.isDigit(st.charAt(0)))
       {
-         parse.parseToSymbolTable(st, "DIGIT");
          return "DIGIT";
       }
       else if (specialSymbol.contains(st))
       {
-         return "SYMBOL";
+         parse.parseToSymbolTable(st, "PROCEDURE");
+         return "PROCEDURE";
       }
       else
       {
