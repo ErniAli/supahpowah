@@ -27,7 +27,8 @@ public class SchemeScanner
     */
    public static void main(String[] args) throws Exception
    {
-      SchemeScanner scanner = new SchemeScanner(args[0]);
+//      SchemeScanner scanner = new SchemeScanner(args[0]);
+      SchemeScanner scanner = new SchemeScanner("input.lisp");
       scanner.scan();
    }
 
