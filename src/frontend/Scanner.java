@@ -9,10 +9,12 @@ import java.util.ArrayList;
 
 public class Scanner
 {
+   Parser parse = new Parser();
    private char ch;    // current input character
    ArrayList<String> reservedWords = new ArrayList();
    ArrayList<String> specialSymbol = new ArrayList();
    //add here if you want to check procedure example: member?, null?
+
    public void addReservedWords()
    {
       reservedWords.add("let*");
@@ -134,24 +136,41 @@ public class Scanner
     @param ch the character.
     @return the type.
     */
-   String typeOf(String st)
+   String typeOf(String st) throws Exception
    {
-      if(reservedWords.contains(st))
+      //handle define, the word after it is a procedure
+
+      if (st.equals("define"))
+      {
+         String tokenType = "RESERVED WORD";
+         System.out.println(tokenType);
+
+         st = nextToken();
+         System.out.print("=====> \"" + st + "\" ");
+         parse.parseToSymbolTable(st, "PROCEDURE");
+         return "PROCEDURE";
+      }
+      else if(parse.symTabContains(st))
+      {
+         return parse.symTabValue(st);
+      }
+      else if (reservedWords.contains(st))
       {
          return "RESERVED WORD";
       }
-      else if(Character.isDigit(st.charAt(0)))
+      else if (Character.isDigit(st.charAt(0)))
       {
+         parse.parseToSymbolTable(st, "DIGIT");
          return "DIGIT";
       }
-      else if(specialSymbol.contains(st))
+      else if (specialSymbol.contains(st))
       {
-         return "SPECIAL SYMBOL";
+         return "SYMBOL";
       }
       else
       {
          //put into symbol table
-
+         parse.parseToSymbolTable(st, "IDENTIFIER");
          return "IDENTIFIER";
       }
       //add here if you want to check procedure example: member?, null?
