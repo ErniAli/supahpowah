@@ -1,4 +1,4 @@
-package FrontEnd;
+package frontend;
 
 /**
 
@@ -90,7 +90,7 @@ public class Scanner
 
     @throws Exception if an error occurs.
     */
-   private void scan()
+   public void scan()
            throws Exception
    {
       addReservedWords();
@@ -104,6 +104,7 @@ public class Scanner
          //ignore the parentheses
          if (token != null && !("()".contains(token)))
          {
+//            System.out.println(token);
             token = token.replaceAll("[()]", "");
             String afterQuote = "";
             char tokenAt0 = token.charAt(0);
@@ -149,6 +150,8 @@ public class Scanner
       }
       else
       {
+         //put into symbol table
+
          return "IDENTIFIER";
       }
       //add here if you want to check procedure example: member?, null?
@@ -215,19 +218,5 @@ public class Scanner
          ex.printStackTrace();
          System.exit(-1);
       }
-   }
-
-   /**
-    Main.
-
-    @param args command-line arguments.
-    @throws Exception if an error occurred.
-    */
-   public static void main(String[] args)
-           throws Exception
-   {
-//      SimpleDFAScanner scanner = new SimpleDFAScanner(args[0]);
-      Scanner scanner = new Scanner("input.lisp");
-      scanner.scan();
    }
 }

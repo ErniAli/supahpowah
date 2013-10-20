@@ -10,9 +10,14 @@ package frontend;
  */
 public class Parser
 {
+   public static void parseFile(String fileName) throws Exception
+   {
+      Scanner scanner = new Scanner(fileName);
+      scanner.scan();
+   }
 
-    public static void parseFile(String inputFileName) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
+   public void parseToSymbolTable()
+   {
+      
+   }
 }
