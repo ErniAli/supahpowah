@@ -10,4 +10,13 @@ package middlelayer;
  */
 public class SymbolTable {
     
+    
+    
+    
+    
+    
+    private void writeToFile(){
+        
+    }
+    
 }

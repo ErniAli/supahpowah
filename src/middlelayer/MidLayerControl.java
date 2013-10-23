@@ -2,7 +2,8 @@ package middlelayer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import frontend.Parser;
+//import frontend.Parser;
+import frontend.AltParser;
 
 /**
  This class is designed solely to handle files that contain the objects in the
@@ -13,8 +14,10 @@ import frontend.Parser;
  */
 public class MidLayerControl
 {
-   Parser parser = new Parser();
-   public String getMidLayerObjectFileNames(String inputFileName) throws FileNotFoundException, Exception
+   //Parser parser = new Parser();
+   private AltParser parser = new AltParser();
+   
+   public String getMidLayerObjectFileNames(String inputFileName) throws FileNotFoundException
    {
 
       //This string will always be returned if no errors are encountered.
@@ -41,7 +44,8 @@ public class MidLayerControl
       {
 
          //Here's where we do all the magic
-         parser.parseFile(inputFileName);
+         parser.parseFile(sourceFile);
+         
 
       }
 

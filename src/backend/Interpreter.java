@@ -41,7 +41,7 @@ public class Interpreter
    /**
     Run the interpreter on the given input file.
     */
-   public void run() throws Exception
+   public void run()
    {
       MidLayerControl mLC = new MidLayerControl();
       String files = "";

@@ -20,6 +20,8 @@ public class Parser
    public void parseFile(String fileName) throws Exception
    {
       Scanner scanner = new Scanner(fileName);
+      
+      
       scanner.scan();
       printSymTab();
       //print it here for now
