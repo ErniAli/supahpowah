@@ -4,6 +4,7 @@
  */
 package frontend;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -17,14 +18,27 @@ public class Parser
 {
    static TreeMap symbolTable = new TreeMap<>();
 
-   public void parseFile(String fileName) throws Exception
+   public Parser()
    {
-      Scanner scanner = new Scanner(fileName);
-      
-      
-      scanner.scan();
-      printSymTab();
-      //print it here for now
+   }
+
+   public void parseFile(String inputFile) throws Exception
+   {
+      Scanner scanPrint = new Scanner(inputFile);
+      scanPrint.scan(); //printout all the stuff in scanner first
+      printSymTab(); //this should be printed backend
+
+      Scanner scanner = new Scanner(inputFile);
+      String token;
+      //need to call this first for the scanner to work.
+      //this thing has a print statement in it to printout the lines.
+      scanner.nextChar();
+      while ((token = scanner.nextToken()) != null)
+      {
+//         System.out.println("dat token: " + token);
+         //add the token to the tree and list - assuming it is not a comment
+      }
+//      printSymTab();
    }
 
    public void parseToSymbolTable(String key, String value)

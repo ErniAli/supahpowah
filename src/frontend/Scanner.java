@@ -54,7 +54,7 @@ public class Scanner
     @return name of the next token
     @throws Exception if an error occurs.
     */
-   private String nextToken()
+   public String nextToken()
            throws Exception
    {
       // Skip blanks.
@@ -78,11 +78,19 @@ public class Scanner
       //build the string
       StringBuilder buffer = new StringBuilder();
 
-      while (!(" ".contains(Character.toString(ch))))
+      if("'()".contains(Character.toString(ch)))
+      {
+         buffer.append(ch);
+         nextChar();
+         return buffer.toString();
+      }
+
+      while (!(" )".contains(Character.toString(ch))))
       {
          buffer.append(ch);  // build token string
          nextChar();
       }
+
 
       return buffer.toString();
    }
@@ -103,26 +111,9 @@ public class Scanner
       {  // EOF?
          String token = nextToken();
 
-         //ignore the parentheses
-         if (token != null && !("()".contains(token)))
+         //We don't want to printout the parenthesis
+         if (token != null && !"()".contains(token))
          {
-//            System.out.println(token);
-            token = token.replaceAll("[()]", "");
-            String afterQuote = "";
-            char tokenAt0 = token.charAt(0);
-            if (tokenAt0 == '\'')
-            {
-               afterQuote = token.substring(1);
-               token = "'";
-
-               if (afterQuote.length() > 0)
-               {
-                  System.out.print("=====> \"" + token + "\" ");
-                  String tokenType = typeOf(token);
-                  System.out.println(tokenType);
-                  token = afterQuote;
-               }
-            }
             System.out.print("=====> \"" + token + "\" ");
             String tokenType = typeOf(token);
             System.out.println(tokenType);
@@ -131,9 +122,9 @@ public class Scanner
    }
 
    /**
-    Return the character type.
+    Return the type of the token.
 
-    @param ch the character.
+    @param String the token.
     @return the type.
     */
    String typeOf(String st) throws Exception
