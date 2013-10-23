@@ -30,7 +30,6 @@ public class Scanner
       reservedWords.add("or");
       reservedWords.add("quote");
       reservedWords.add("'");
-      reservedWords.add("");
    }
 
    public void addSpecialSymbols()
@@ -114,8 +113,21 @@ public class Scanner
          //We don't want to printout the parenthesis
          if (token != null && !"()".contains(token))
          {
+            String tokenType = "";
             System.out.print("=====> \"" + token + "\" ");
-            String tokenType = typeOf(token);
+            if (token.equals("define"))
+            {
+               tokenType = "RESERVED WORD";
+               System.out.println(tokenType);
+               token = nextToken();
+
+               System.out.print("=====> \"" + token + "\" ");
+               tokenType = "PROCEDURE";
+            }
+            else
+            {
+               tokenType = typeOf(token);
+            }
             System.out.println(tokenType);
          }
       }
@@ -130,22 +142,8 @@ public class Scanner
    String typeOf(String st) throws Exception
    {
       //handle define, the word after it is a procedure
-
-      if (st.equals("define"))
-      {
-         String tokenType = "RESERVED WORD";
-         System.out.println(tokenType);
-
-         st = nextToken();
-         System.out.print("=====> \"" + st + "\" ");
-         parse.parseToSymbolTable(st, "PROCEDURE");
-         return "PROCEDURE";
-      }
-      else if(parse.symTabContains(st))
-      {
-         return parse.symTabValue(st);
-      }
-      else if (reservedWords.contains(st))
+      //to ensure that everything after define is still procedure
+      if (reservedWords.contains(st))
       {
          return "RESERVED WORD";
       }
@@ -155,13 +153,10 @@ public class Scanner
       }
       else if (specialSymbol.contains(st))
       {
-         parse.parseToSymbolTable(st, "PROCEDURE");
          return "PROCEDURE";
       }
       else
       {
-         //put into symbol table
-         parse.parseToSymbolTable(st, "IDENTIFIER");
          return "IDENTIFIER";
       }
       //add here if you want to check procedure example: member?, null?

@@ -17,6 +17,7 @@ import java.util.TreeMap;
 public class Parser
 {
    static TreeMap symbolTable = new TreeMap<>();
+   static Scanner scanner;
 
    public Parser()
    {
@@ -26,25 +27,46 @@ public class Parser
    {
       Scanner scanPrint = new Scanner(inputFile);
       scanPrint.scan(); //printout all the stuff in scanner first
-      printSymTab(); //this should be printed backend
 
-      Scanner scanner = new Scanner(inputFile);
+      scanner = new Scanner(inputFile);
       String token;
       System.out.println("\nYOUR ORIGINAL FILE: ");
       //need to call this first for the scanner to work.
       //this thing has a print statement in it to printout the lines.
       scanner.nextChar();
+      scanner.addReservedWords();
+      scanner.addSpecialSymbols();
       while ((token = scanner.nextToken()) != null)
       {
-//         System.out.println("dat token: " + token);
+         //put to Symbol table
+         parseToSymbolTable(token);
+
          //add the token to the tree and list - assuming it is not a comment
       }
-//      printSymTab();
+      //move this printing to somewhere else
+      printSymTab();
    }
 
-   public void parseToSymbolTable(String key, String value)
+   public void parseToSymbolTable(String token) throws Exception
    {
-      symbolTable.put(key, value);
+      String type = scanner.typeOf(token);
+      if(symTabContains(token))
+      {
+         //do nothing, already inside the symtab
+      }
+      else if(token.equals("define"))
+      {
+         token = scanner.nextToken();
+         symbolTable.put(token, "PROCEDURE");
+      }
+      else if(type.equals("PROCEDURE"))
+      {
+         symbolTable.put(token, "PROCEDURE");
+      }
+      else if(type.equals("IDENTIFIER") && !"()".contains(token))
+      {
+         symbolTable.put(token, "IDENTIFIER");
+      }
    }
 
    public void printSymTab()
@@ -72,4 +94,6 @@ public class Parser
    {
       return symbolTable.get(st).toString();
    }
+
+
 }
