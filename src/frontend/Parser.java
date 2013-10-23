@@ -30,6 +30,7 @@ public class Parser
 
       Scanner scanner = new Scanner(inputFile);
       String token;
+      System.out.println("\nYOUR ORIGINAL FILE: ");
       //need to call this first for the scanner to work.
       //this thing has a print statement in it to printout the lines.
       scanner.nextChar();
