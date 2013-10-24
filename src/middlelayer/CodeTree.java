@@ -62,7 +62,7 @@ public class CodeTree
    {
 
       Node cNode = null;
-      Stack<Node> st = null;
+      Stack<Node> st = new Stack<Node>();
 
       System.out.print("(");//has to start with this
       cNode = this.root;

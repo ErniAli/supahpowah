@@ -48,10 +48,11 @@ public class Interpreter
       try
       {
          status = mlc.getMidLayerObjectFileNames(inputFileName);
-         
-         mlc.getCodeTree().printTree();
+
          mlc.getSymbolTable().printSymTab();
-         
+
+         mlc.getCodeTree().printTree();
+
       }
       catch (FileNotFoundException ex)
       {
