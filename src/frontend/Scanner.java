@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 public class Scanner
 {
-   Parser parse = new Parser();
    private char ch;    // current input character
    ArrayList<String> reservedWords = new ArrayList();
    ArrayList<String> specialSymbol = new ArrayList();
@@ -102,8 +101,6 @@ public class Scanner
    public void scan()
            throws Exception
    {
-      addReservedWords();
-      addSpecialSymbols();
       nextChar();
 
       while (ch != 0)
@@ -214,6 +211,8 @@ public class Scanner
     */
    public Scanner(String sourcePath)
    {
+      addReservedWords();
+      addSpecialSymbols();
       try
       {
          reader = new BufferedReader(new FileReader(sourcePath));
@@ -223,5 +222,111 @@ public class Scanner
          ex.printStackTrace();
          System.exit(-1);
       }
+   }
+
+   //this method doesn't have any print that will get in the way
+   void nextCharNoPrint() throws Exception
+   {
+      if ((line == null) || (++linePos >= line.length()))
+      {
+         line = reader.readLine();
+         if (line != null)
+         {
+            while (line.length() > 0 && line.charAt(0) == ';')
+            {
+               line = reader.readLine();
+            }
+            line += " ";
+            linePos = 0;
+            ch = line.charAt(0);
+         }
+         else
+         {
+            ch = 0;
+         }
+      }
+      else
+      {
+         while (line.length() > 0 && line.charAt(linePos) == ';')
+         {
+            line = reader.readLine();
+            linePos = 0;
+            nextChar();
+         }
+         ch = line.charAt(linePos);
+      }
+   }
+
+   /**
+    Extract the next token from the source file.
+
+    @return token, the Token itself
+    @throws Exception if an error occurs.
+    */
+   public Token getNextToken()
+           throws Exception
+   {
+      // Skip blanks.
+      while (Character.isWhitespace(ch))
+      {
+         nextCharNoPrint();
+      }
+
+      while (ch == ';')
+      {
+         line = reader.readLine();
+         nextCharNoPrint();
+      }
+
+      // At EOF?
+      if (ch == 0)
+      {
+         return null;
+      }
+
+      //build the string
+      StringBuilder buffer = new StringBuilder();
+
+      if("'()".contains(Character.toString(ch)))
+      {
+         buffer.append(ch);
+         nextCharNoPrint();
+         return determineToken(buffer.toString());
+      }
+
+      while (!(" )".contains(Character.toString(ch))))
+      {
+         buffer.append(ch);  // build token string
+         nextCharNoPrint();
+      }
+
+      return determineToken(buffer.toString());
+   }
+
+   public Token determineToken(String st)
+   {
+      Token tok = new Token();
+      tok.setValue(st);
+      if(st.equals("("))
+      {
+         tok.setType(Token.TokenType.L_PAREN);
+      }
+      else if(st.equals(")"))
+      {
+         tok.setType(Token.TokenType.R_PAREN);
+      }
+      else if(Character.isDigit(st.charAt(0)))
+      {
+         tok.setType(Token.TokenType.NUMBER);
+      }
+      else if(specialSymbol.contains(st))
+      {
+         tok.setType(Token.TokenType.SYMBOL);
+      }
+      else
+      {
+         tok.setType(Token.TokenType.WORD);
+      }
+      return tok;
    }
 }

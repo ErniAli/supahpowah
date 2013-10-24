@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import middlelayer.SymbolTable;
 
 /**
 
@@ -16,7 +17,7 @@ import java.util.TreeMap;
  */
 public class Parser
 {
-   static TreeMap symbolTable = new TreeMap<>();
+   public SymbolTable symTab = new SymbolTable();
    static Scanner scanner;
 
    public Parser()
@@ -29,71 +30,38 @@ public class Parser
       scanPrint.scan(); //printout all the stuff in scanner first
 
       scanner = new Scanner(inputFile);
-      String token;
-      System.out.println("\nYOUR ORIGINAL FILE: ");
+      Token token;
       //need to call this first for the scanner to work.
-      //this thing has a print statement in it to printout the lines.
-      scanner.nextChar();
-      scanner.addReservedWords();
-      scanner.addSpecialSymbols();
-      while ((token = scanner.nextToken()) != null)
+      scanner.nextCharNoPrint();
+      while ((token = scanner.getNextToken()) != null)
       {
          //put to Symbol table
          parseToSymbolTable(token);
-
          //add the token to the tree and list - assuming it is not a comment
       }
       //move this printing to somewhere else
-      printSymTab();
    }
 
-   public void parseToSymbolTable(String token) throws Exception
+   public void parseToSymbolTable(Token token) throws Exception
    {
-      String type = scanner.typeOf(token);
-      if(symTabContains(token))
+      if(symTab.symTabContains(token.getValue()))
       {
          //do nothing, already inside the symtab
       }
-      else if(token.equals("define"))
+      else if(token.getType() == Token.TokenType.WORD)
       {
-         token = scanner.nextToken();
-         symbolTable.put(token, "PROCEDURE");
+         if(scanner.reservedWords.contains(token.getValue()))
+         {
+            //do nothing, reserved word
+         }
+         else if(!"()".contains(token.getValue()))
+         {
+            symTab.setSymTab(token.getValue(), "IDENTIFIER");
+         }
       }
-      else if(type.equals("PROCEDURE"))
+      else if(token.getType() == Token.TokenType.SYMBOL)
       {
-         symbolTable.put(token, "PROCEDURE");
-      }
-      else if(type.equals("IDENTIFIER") && !"()".contains(token))
-      {
-         symbolTable.put(token, "IDENTIFIER");
-      }
-   }
-
-   public void printSymTab()
-   {
-      System.out.println("\n SYMBOL TABLE:");
-      // Get a set of the entries
-      Set set = symbolTable.entrySet();
-      // Get an iterator
-      Iterator i = set.iterator();
-      // Display elements
-      while (i.hasNext())
-      {
-         Map.Entry me = (Map.Entry) i.next();
-         System.out.print(me.getKey() + ": ");
-         System.out.println(me.getValue());
+         symTab.setSymTab(token.getValue(), "PROCEDURE");
       }
    }
-
-   public boolean symTabContains(String st)
-   {
-      return symbolTable.containsKey(st);
-   }
-
-   public String symTabValue(String st)
-   {
-      return symbolTable.get(st).toString();
-   }
-
-
 }

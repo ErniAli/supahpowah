@@ -5,9 +5,10 @@ package frontend;
  * @author charles
  */
 public class Token {
-    
+
+   //symbol is plus, minus, quote
     public enum TokenType {COMMENT, L_PAREN, R_PAREN, WORD, NUMBER, SYMBOL}
-    
+
     private String value = null;
     private TokenType type = null;
 
@@ -30,5 +31,5 @@ public class Token {
     public void setValue(String value) {
         this.value = value;
     }
-    
+
 }
