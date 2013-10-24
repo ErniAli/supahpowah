@@ -19,6 +19,12 @@ public class Parser
    {
    }
 
+   /**
+    This method prints stuff in scanner and also put the tokens into the symbol
+    table.
+    @param inputFile the string name of the input file
+    @throws Exception
+    */
    public void parseFile(String inputFile) throws Exception
    {
       Scanner scanPrint = new Scanner(inputFile);
@@ -32,29 +38,34 @@ public class Parser
       {
          //put to Symbol table
          parseToSymbolTable(token);
+
          //add the token to the tree and list - assuming it is not a comment
       }
-      //move this printing to somewhere else
    }
 
+   /**
+   This method parse Tokens into the symbol table.
+   @param token the Token that is about to be processed and put into symtab.
+   @throws Exception
+   */
    public void parseToSymbolTable(Token token) throws Exception
    {
-      if(symTab.symTabContains(token.getValue()))
+      if (symTab.symTabContains(token.getValue()))
       {
          //do nothing, already inside the symtab
       }
-      else if(token.getType() == Token.TokenType.WORD)
+      else if (token.getType() == Token.TokenType.WORD)
       {
-         if(scanner.reservedWords.contains(token.getValue()))
+         if (scanner.reservedWords.contains(token.getValue()))
          {
             //do nothing, reserved word
          }
-         else if(!"()".contains(token.getValue()))
+         else if (!"()".contains(token.getValue()))
          {
             symTab.setSymTab(token.getValue(), "IDENTIFIER");
          }
       }
-      else if(token.getType() == Token.TokenType.SYMBOL)
+      else if (token.getType() == Token.TokenType.SYMBOL)
       {
          symTab.setSymTab(token.getValue(), "PROCEDURE");
       }

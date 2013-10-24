@@ -14,6 +14,7 @@ public class Scanner
    ArrayList<String> specialSymbol = new ArrayList();
    //add here if you want to check procedure example: member?, null?
 
+   // the array list with the reserved words
    public void addReservedWords()
    {
       reservedWords.add("let*");
@@ -30,6 +31,7 @@ public class Scanner
       reservedWords.add("quote");
       reservedWords.add("'");
    }
+   //array list with the symbols
 
    public void addSpecialSymbols()
    {
@@ -49,7 +51,7 @@ public class Scanner
    /**
     Extract the next token from the source file.
 
-    @return name of the next token
+    @return String name of the next token
     @throws Exception if an error occurs.
     */
    public String nextToken()
@@ -76,7 +78,7 @@ public class Scanner
       //build the string
       StringBuilder buffer = new StringBuilder();
 
-      if("'()".contains(Character.toString(ch)))
+      if ("'()".contains(Character.toString(ch)))
       {
          buffer.append(ch);
          nextChar();
@@ -94,7 +96,7 @@ public class Scanner
    }
 
    /**
-    Scan the source file.
+    Scan the source file and also does all the printing
 
     @throws Exception if an error occurs.
     */
@@ -131,7 +133,7 @@ public class Scanner
    }
 
    /**
-    Return the type of the token.
+    Return the type of the token in String.
 
     @param String the token.
     @return the type.
@@ -164,12 +166,12 @@ public class Scanner
    private int linePos = -1;
 
    /**
-    Get the next character form the source file.
+    Get the next character form the source file. This method also does some
+    printing.
 
     @throws Exception if an error occurred.
     */
-   void nextChar()
-           throws Exception
+   void nextChar() throws Exception
    {
       if ((line == null) || (++linePos >= line.length()))
       {
@@ -258,13 +260,12 @@ public class Scanner
    }
 
    /**
-    Extract the next token from the source file.
+    Extract the next token from the source file and does no printing.
 
-    @return token, the Token itself
+    @return token, the Token itself with the value and type
     @throws Exception if an error occurs.
     */
-   public Token getNextToken()
-           throws Exception
+   public Token getNextToken() throws Exception
    {
       // Skip blanks.
       while (Character.isWhitespace(ch))
@@ -287,7 +288,7 @@ public class Scanner
       //build the string
       StringBuilder buffer = new StringBuilder();
 
-      if("'()".contains(Character.toString(ch)))
+      if ("'()".contains(Character.toString(ch)))
       {
          buffer.append(ch);
          nextCharNoPrint();
@@ -303,23 +304,29 @@ public class Scanner
       return determineToken(buffer.toString());
    }
 
+   /**
+    This method takes in a string token and returns a Token type with the value
+    and type.
+    @param st, the string of the token.
+    @return the token itself with the value and type
+    */
    public Token determineToken(String st)
    {
       Token tok = new Token();
       tok.setValue(st);
-      if(st.equals("("))
+      if (st.equals("("))
       {
          tok.setType(Token.TokenType.L_PAREN);
       }
-      else if(st.equals(")"))
+      else if (st.equals(")"))
       {
          tok.setType(Token.TokenType.R_PAREN);
       }
-      else if(Character.isDigit(st.charAt(0)))
+      else if (Character.isDigit(st.charAt(0)))
       {
          tok.setType(Token.TokenType.NUMBER);
       }
-      else if(specialSymbol.contains(st))
+      else if (specialSymbol.contains(st))
       {
          tok.setType(Token.TokenType.SYMBOL);
       }
