@@ -16,6 +16,8 @@ public class MidLayerControl
 {
    //Parser parser = new Parser();
    private AltParser parser = new AltParser();
+   private CodeTree codeTree;
+   private SymbolTable symbolTable;
    
    public String getMidLayerObjectFileNames(String inputFileName) throws FileNotFoundException
    {
