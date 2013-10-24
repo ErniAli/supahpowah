@@ -43,17 +43,21 @@ public class Interpreter
     */
    public void run()
    {
-      MidLayerControl mLC = new MidLayerControl();
-      String files = "";
+      MidLayerControl mlc = new MidLayerControl();
+      String status = "";
       try
       {
-         files = mLC.getMidLayerObjectFileNames(inputFileName);
+         status = mlc.getMidLayerObjectFileNames(inputFileName);
+         
+         mlc.getCodeTree().printTree();
+         mlc.getSymbolTable().printSymTab();
+         
       }
       catch (FileNotFoundException ex)
       {
          System.out.println("Error: " + ex.getMessage());
       }
-      System.out.println(files);//this is to test to be sure it is working...
+      System.out.println(status);//this is to test to be sure it is working...
 
       //From here, manipulate the code tree and symbol table
    }

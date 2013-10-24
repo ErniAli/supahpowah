@@ -4,7 +4,7 @@
  */
 package frontend;
 
-import middlelayer.SymbolTable;
+import middlelayer.*;
 
 /**
 
@@ -12,9 +12,11 @@ import middlelayer.SymbolTable;
  */
 public class Parser
 {
-   public SymbolTable symTab = new SymbolTable();
+   private SymbolTable symbolTable;
+   private CodeTree codeTree;
    static Scanner scanner;
 
+   
    public Parser()
    {
    }
@@ -25,8 +27,14 @@ public class Parser
     @param inputFile the string name of the input file
     @throws Exception
     */
-   public void parseFile(String inputFile) throws Exception
+   public void parseFile(MidLayerControl mlc) throws Exception
    {
+       
+       String inputFile = mlc.getInputFileName();
+       this.codeTree = mlc.getCodeTree();
+       this.symbolTable = mlc.getSymbolTable();
+       
+       
       Scanner scanPrint = new Scanner(inputFile);
       scanPrint.scan(); //printout all the stuff in scanner first
 
@@ -40,7 +48,13 @@ public class Parser
          parseToSymbolTable(token);
 
          //add the token to the tree and list - assuming it is not a comment
+         //Note that even comments should be handled by the tree itself
+         this.codeTree.addToken(token);
       }
+      
+      //don't remember if this is needed...
+      mlc.setCodeTree(this.codeTree);
+      mlc.setSymbolTable(this.symbolTable);
    }
 
    /**
@@ -50,7 +64,7 @@ public class Parser
    */
    public void parseToSymbolTable(Token token) throws Exception
    {
-      if (symTab.symTabContains(token.getValue()))
+      if (this.symbolTable.symTabContains(token.getValue()))
       {
          //do nothing, already inside the symtab
       }
@@ -62,12 +76,12 @@ public class Parser
          }
          else if (!"()".contains(token.getValue()))
          {
-            symTab.setSymTab(token.getValue(), "IDENTIFIER");
+            this.symbolTable.setSymTab(token.getValue(), "IDENTIFIER");
          }
       }
       else if (token.getType() == Token.TokenType.SYMBOL)
       {
-         symTab.setSymTab(token.getValue(), "PROCEDURE");
+         this.symbolTable.setSymTab(token.getValue(), "PROCEDURE");
       }
    }
 }
