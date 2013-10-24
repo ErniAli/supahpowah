@@ -21,7 +21,6 @@ public class SymbolTable
 
    public void printSymTab()
    {
-      System.out.println("\n SYMBOL TABLE:");
       // Get a set of the entries
       Set set = symbolTable.entrySet();
       // Get an iterator
@@ -54,5 +53,5 @@ public class SymbolTable
    {
       return symbolTable;
    }
-   
+
 }
