@@ -1,0 +1,206 @@
+//This is the output that is generated when the project is ran. 
+//Team Supah Powah, CS 152, Section 02
+//Erni Ali
+//Charles Flood 
+//Su Sandi
+
+run:
+[1] ; Find the derivative of polynomial poly with repect to variable var.
+[2] ; The polynomial must be in canonical infix form.
+[3] (define deriv
+=====> "define" RESERVED WORD
+=====> "deriv" PROCEDURE
+[4]   (lambda (poly var)
+=====> "lambda" RESERVED WORD
+=====> "poly" IDENTIFIER
+=====> "var" IDENTIFIER
+[5]     (let* ((terms (terminize poly)) ; "terminize" the polynomial
+=====> "let*" RESERVED WORD
+=====> "terms" IDENTIFIER
+=====> "terminize" IDENTIFIER
+=====> "poly" IDENTIFIER
+[6]         (deriv-term ; local procedure deriv-term
+=====> "deriv-term" IDENTIFIER
+[7]           (lambda (term)
+=====> "lambda" RESERVED WORD
+=====> "term" IDENTIFIER
+[8]             (cond
+=====> "cond" RESERVED WORD
+[9]               ((null? term) '())
+=====> "null?" IDENTIFIER
+=====> "term" IDENTIFIER
+=====> "'" RESERVED WORD
+[10]               ((not (member? var term)) '(0)) ; deriv = 0
+=====> "not" RESERVED WORD
+=====> "member?" IDENTIFIER
+=====> "var" IDENTIFIER
+=====> "term" IDENTIFIER
+=====> "'" RESERVED WORD
+=====> "0" DIGIT
+[11]               ((not (member? '^ term)) (upto var term)) ; deriv = coeff
+=====> "not" RESERVED WORD
+=====> "member?" IDENTIFIER
+=====> "'" RESERVED WORD
+=====> "^" PROCEDURE
+=====> "term" IDENTIFIER
+=====> "upto" IDENTIFIER
+=====> "var" IDENTIFIER
+=====> "term" IDENTIFIER
+[12]               (else (deriv-term-expo term var)) ; handle exponent
+=====> "else" RESERVED WORD
+=====> "deriv-term-expo" IDENTIFIER
+=====> "term" IDENTIFIER
+=====> "var" IDENTIFIER
+[13]             )
+[14]           )
+[15]         )
+[16]         (diff (map deriv-term terms)) ; map deriv-term over the terms
+=====> "diff" IDENTIFIER
+=====> "map" IDENTIFIER
+=====> "deriv-term" IDENTIFIER
+=====> "terms" IDENTIFIER
+[17]       )
+[18]       (remove-trailing-plus (polyize diff)) ; finalize the answer
+=====> "remove-trailing-plus" IDENTIFIER
+=====> "polyize" IDENTIFIER
+=====> "diff" IDENTIFIER
+[19]     )
+[20]   )
+[21] )
+[22] 
+[23] ; Convert an infix polynomial into a list of sublists,
+[24] ; where each sublist is a term.
+[25] (define terminize
+=====> "define" RESERVED WORD
+=====> "terminize" PROCEDURE
+[26]   (lambda (poly)
+=====> "lambda" RESERVED WORD
+=====> "poly" IDENTIFIER
+[27]     (cond
+=====> "cond" RESERVED WORD
+[28]       ((null? poly) '())
+=====> "null?" IDENTIFIER
+=====> "poly" IDENTIFIER
+=====> "'" RESERVED WORD
+[29]       (else (cons (upto '+ poly) (terminize (after '+ poly))))
+=====> "else" RESERVED WORD
+=====> "cons" IDENTIFIER
+=====> "upto" IDENTIFIER
+=====> "'" RESERVED WORD
+=====> "+" PROCEDURE
+=====> "poly" IDENTIFIER
+=====> "terminize" IDENTIFIER
+=====> "after" IDENTIFIER
+=====> "'" RESERVED WORD
+=====> "+" PROCEDURE
+=====> "poly" IDENTIFIER
+[30]     )
+[31]   )
+[32] ) 
+
+SYMBOL TABLE:
++: PROCEDURE
+^: PROCEDURE
+after: IDENTIFIER
+cons: IDENTIFIER
+deriv: IDENTIFIER
+deriv-term: IDENTIFIER
+deriv-term-expo: IDENTIFIER
+diff: IDENTIFIER
+map: IDENTIFIER
+member?: IDENTIFIER
+null?: IDENTIFIER
+poly: IDENTIFIER
+polyize: IDENTIFIER
+remove-trailing-plus: IDENTIFIER
+term: IDENTIFIER
+terminize: IDENTIFIER
+terms: IDENTIFIER
+upto: IDENTIFIER
+var: IDENTIFIER
+
+YOUR CODE TREE:
+
+(define deriv 
+   (lambda 
+      (poly var )
+
+      (let* 
+         (
+            (terms 
+               (terminize poly )
+            )
+
+            (deriv-term 
+               (lambda 
+                  (term )
+
+                  (cond 
+                     (
+                        (null? term )
+' 
+                        ()
+                     )
+
+                     (
+                        (not 
+                           (member? var term )
+                        )
+' 
+                        (0 )
+                     )
+
+                     (
+                        (not 
+                           (member? ' ^ term )
+                        )
+
+                        (upto var term )
+                     )
+
+                     (else 
+                        (deriv-term-expo term var )
+                     )
+                  )
+               )
+            )
+
+            (diff 
+               (map deriv-term terms )
+            )
+         )
+
+         (remove-trailing-plus 
+            (polyize diff )
+         )
+      )
+   )
+)
+-----------------------
+
+(define terminize 
+   (lambda 
+      (poly )
+
+      (cond 
+         (
+            (null? poly )
+' 
+            ()
+         )
+
+         (else 
+            (cons 
+               (upto ' + poly )
+
+               (terminize 
+                  (after ' + poly )
+               )
+            )
+         )
+      )
+   )
+)
+-----------------------
+Finished
+BUILD SUCCESSFUL (total time: 0 seconds)
