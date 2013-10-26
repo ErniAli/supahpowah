@@ -9,3 +9,6 @@ On the Project Properties window that pops up, enter:
             input file).
 
 - The program takes in one argument, mainly the name of the input file.
+
+This project is also located on GITHUB on this link: 
+https://github.com/ErniAli/supahpowah

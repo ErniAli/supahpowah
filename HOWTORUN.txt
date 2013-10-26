@@ -1,0 +1,8 @@
+You can import the zip file into netbeans by using:
+File > Import Project > From ZIP
+
+Afterwards, browse to the SupahPowahNetbeansZIP.zip and select import. 
+The project will be imported. 
+
+In case this is confusing or if Netbeans isn't the primary IDE, the src file is 
+also included. 
