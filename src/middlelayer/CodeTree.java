@@ -46,15 +46,7 @@ public class CodeTree
               root = new Node();
               currentNode = parentStack.push(root);
               definitions.add(root);
-          }
-          
-         /*if (root == null)
-         {
-            root = new Node();
-            currentNode = parentStack.push(root);
-         }*/
-         else
-         {
+          }else{
             currentNode.leftChild = new Node();
             parentStack.push(currentNode);
             currentNode = currentNode.leftChild;
@@ -62,10 +54,10 @@ public class CodeTree
       }
       else if (t.getType() == Token.TokenType.R_PAREN)
       {
-          
          currentNode = parentStack.pop();
+         if(!(definitions.get(definitions.size()-1)==currentNode)){
          currentNode.rightChild = new Node();
-         currentNode = currentNode.rightChild;
+         currentNode = currentNode.rightChild;}
       }
       else
       {
@@ -73,7 +65,7 @@ public class CodeTree
          currentNode.rightChild = new Node();
          currentNode = currentNode.rightChild;
       }
-      printTreeTest();
+      //printTreeTest();
    }
 
    
@@ -105,48 +97,33 @@ public class CodeTree
        }
        System.out.print("\n\n");
        
-       if(goRight){printNode(n.rightChild);}
        if(goLeft){printNode(n.leftChild);}
+       if(goRight){printNode(n.rightChild);}
    }
    
    
    public void printTree()
    {
-
-      Node cNode = null;
-      Stack<Node> st = new Stack<>();
-
-      System.out.print("(");//has to start with this
-      cNode = definitions.get(0);
-      st.push(cNode);
-
-      while (!st.empty())
-      {
-         if (cNode.value != null)
-         {
-            System.out.print(cNode.value + " ");
-            if (cNode.rightChild != null)
-            {
-               cNode = cNode.rightChild;
-            }
-            else
-            {
-               System.out.print(")");
-               cNode = st.pop();
-            }
-         }
-         else
-         {//has left child
-            //print stuff
-            System.out.println();
-            for (int i = 0; i < st.size(); i++)
-            {
-               System.out.print("   ");
-            }
-            System.out.print("(");
-            st.push(cNode);
-            cNode = cNode.leftChild;
-         }
+      
+      for(Node n: definitions){
+          printTree(n, 0);
+          System.out.println("-----------------------");
       }
+
+   }
+   
+   
+   private void printTree(Node n, int level){
+       Node cNode = n; boolean branch=false;
+       System.out.println();
+       for(int i=0;i<level;i++){System.out.print("   ");}
+       System.out.print("(");
+       while(cNode.rightChild!=null){
+           if(cNode.value!=null){System.out.print(cNode.value + " ");}
+           if(cNode.leftChild!=null){branch=true; printTree(cNode.leftChild,level+1);}
+           cNode = cNode.rightChild;
+       }
+       if(branch){for(int i=0;i<level;i++){System.out.print("   ");}}
+       System.out.println(")");
    }
 }

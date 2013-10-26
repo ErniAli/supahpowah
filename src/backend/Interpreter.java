@@ -49,8 +49,8 @@ public class Interpreter
       {
          status = mlc.getMidLayerObjectFileNames(inputFileName);
 
-       //  System.out.println("\nSYMBOL TABLE:");
-       //  mlc.getSymbolTable().printSymTab();
+        System.out.println("\nSYMBOL TABLE:");
+         mlc.getSymbolTable().printSymTab();
 
          System.out.println("\nYOUR CODE TREE:");
          mlc.getCodeTree().printTree();
