@@ -1,8 +1,9 @@
 package frontend;
 
 /**
+ This is the scanner method that scans the source files and return tokens.
 
- @author Erni
+ @author Team Supah Powah, CS 152, Section 02 Erni Ali, Charles Flood, Su Sandi
  */
 import java.io.*;
 import java.util.ArrayList;
@@ -307,6 +308,7 @@ public class Scanner
    /**
     This method takes in a string token and returns a Token type with the value
     and type.
+
     @param st, the string of the token.
     @return the token itself with the value and type
     */

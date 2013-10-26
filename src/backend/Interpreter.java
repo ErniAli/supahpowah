@@ -6,7 +6,7 @@ import middlelayer.*;
 /**
  Runs the intermediate code given by the user and prints the output.
 
- @author charles
+ @author Team Supah Powah, CS 152, Section 02 Erni Ali, Charles Flood, Su Sandi
  */
 public class Interpreter
 {
@@ -49,7 +49,7 @@ public class Interpreter
       {
          status = mlc.getMidLayerObjectFileNames(inputFileName);
 
-        System.out.println("\nSYMBOL TABLE:");
+         System.out.println("\nSYMBOL TABLE:");
          mlc.getSymbolTable().printSymTab();
 
          System.out.println("\nYOUR CODE TREE:");

@@ -9,7 +9,7 @@ import frontend.Parser;
  middle layer. It will be able to cache files to speed up the interpreter if the
  source code has not changed since the last time the interpreter ran.
 
- @author charles
+ @author Team Supah Powah, CS 152, Section 02 Erni Ali, Charles Flood, Su Sandi
  */
 public class MidLayerControl
 {
@@ -19,7 +19,8 @@ public class MidLayerControl
    private SymbolTable symbolTable = new SymbolTable();
    private String inputFileName;
 
-   public String getMidLayerObjectFileNames(String inputFileName) throws FileNotFoundException
+   public String getMidLayerObjectFileNames(String inputFileName)
+            throws FileNotFoundException
    {
       this.inputFileName = inputFileName;
       String returnString = "Finished";

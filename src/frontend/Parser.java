@@ -1,14 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package frontend;
 
 import middlelayer.*;
 
 /**
+ This is the parser method that asks the scanner for the next token and also
+ assembles the symbol tree and code tree
 
- @author Erni
+ @author Team Supah Powah, CS 152, Section 02 Erni Ali, Charles Flood, Su Sandi
  */
 public class Parser
 {
@@ -39,7 +37,6 @@ public class Parser
       scanner.nextCharNoPrint();
       while ((token = scanner.getNextToken()) != null)
       {
-//         System.out.println("dat token: " + token.getValue());
          //put to Symbol table
          parseToSymbolTable(token);
 
@@ -65,7 +62,7 @@ public class Parser
       {
          //do nothing, already inside the symtab
       }
-      if(token.getType() == Token.TokenType.WORD)
+      if (token.getType() == Token.TokenType.WORD)
       {
          if (scanner.reservedWords.contains(token.getValue()))
          {
