@@ -7,3 +7,5 @@ On the Project Properties window that pops up, enter:
 - Arguments: input.lisp  --> (this is only if the input file is named input.lisp), 
             so change this argument appropriately. It takes in the name of the 
             input file).
+
+- The program takes in one argument, mainly the name of the input file.
