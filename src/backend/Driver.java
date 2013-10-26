@@ -8,11 +8,12 @@ package backend;
  */
 public class Driver
 {
-   public static void main(String argv[]) throws Exception
+   public static void main(String args[]) throws Exception
    {
       Interpreter interpreter = new Interpreter();
 
-      interpreter.setInputFileName("input.lisp");
+      interpreter.setInputFileName(args[0]);
+//      interpreter.setInputFileName("input.lisp");
       interpreter.run();
    }
 }
