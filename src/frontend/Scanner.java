@@ -180,10 +180,10 @@ public class Scanner
          {
             while (line.length() > 0 && line.charAt(0) == ';')
             {
-           //    System.out.println("[" + ++lineNumber + "] " + line);
+               System.out.println("[" + ++lineNumber + "] " + line);
                line = reader.readLine();
             }
-            //System.out.println("[" + ++lineNumber + "] " + line);
+            System.out.println("[" + ++lineNumber + "] " + line);
             line += " ";
             linePos = 0;
             ch = line.charAt(0);
@@ -199,7 +199,7 @@ public class Scanner
          {
             line = reader.readLine();
             linePos = 0;
-            //System.out.println("[" + ++lineNumber + "] " + line);
+            System.out.println("[" + ++lineNumber + "] " + line);
             nextChar();
          }
          ch = line.charAt(linePos);
