@@ -39,7 +39,13 @@ public class Parser
       {
          //put to Symbol table
          parseToSymbolTable(token);
+      }
 
+      scanner = new Scanner(inputFile);
+      //need to call this first for the scanner to work.
+      scanner.nextCharNoPrint();
+      while ((token = scanner.getNextToken()) != null)
+      {
          //add the token to the tree and list - assuming it is not a comment
          //Note that even comments should be handled by the tree itself
          this.codeTree.addToken(token);
@@ -62,7 +68,13 @@ public class Parser
       {
          //do nothing, already inside the symtab
       }
-      if (token.getType() == Token.TokenType.WORD)
+      //define, then next word must be a procedure.
+      else if(token.getValue().equals("define"))
+      {
+         token = scanner.getNextToken();
+         this.symbolTable.setSymTab(token.getValue(), "PROCEDURE");
+      }
+      else if (token.getType() == Token.TokenType.WORD)
       {
          if (scanner.reservedWords.contains(token.getValue()))
          {
