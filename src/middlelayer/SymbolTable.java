@@ -32,8 +32,6 @@ public class SymbolTable
       this.nestingLevel = nestingLevel;
    }
 
-
-
    /**
     method to print the contents of the symbol table
     */
