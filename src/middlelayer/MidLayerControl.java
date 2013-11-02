@@ -3,6 +3,8 @@ package middlelayer;
 import java.io.FileNotFoundException;
 //import frontend.Parser;
 import frontend.Parser;
+import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  This class is designed solely to handle files that contain the objects in the
@@ -16,7 +18,7 @@ public class MidLayerControl
    //Parser parser = new Parser();
    private Parser parser = new Parser();
    private CodeTree codeTree = new CodeTree();
-   private SymbolTable symbolTable = new SymbolTable();
+   private SymbolTable symbolTable;
    private String inputFileName;
 
    public String getMidLayerObjectFileNames(String inputFileName)
@@ -66,9 +68,15 @@ public class MidLayerControl
    {
       return codeTree;
    }
+//
+//   public SymbolTable getSymbolTable()
+//   {
+//      return symbolTable;
+//   }
 
-   public SymbolTable getSymbolTable()
+   public SymbolTable getSymbolTable(int nestingLevel)
    {
+      symbolTable = new SymbolTable(nestingLevel);
       return symbolTable;
    }
 
@@ -85,5 +93,10 @@ public class MidLayerControl
    public String getInputFileName()
    {
       return inputFileName;
+   }
+
+   public ArrayList getSymStack()
+   {
+      return parser.getSymTabStack();
    }
 }

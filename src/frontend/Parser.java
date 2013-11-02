@@ -1,5 +1,7 @@
 package frontend;
 
+import java.util.ArrayList;
+import java.util.Stack;
 import middlelayer.*;
 
 /**
@@ -13,6 +15,9 @@ public class Parser
    private SymbolTable symbolTable;
    private CodeTree codeTree;
    static Scanner scanner;
+   static Stack parentStack = new Stack();
+   static ArrayList<SymbolTable> symTabStack = new ArrayList<>();
+   private int currentNestingLevel = 0;
 
    /**
     This method prints stuff in scanner and also put the tokens into the symbol
@@ -23,10 +28,10 @@ public class Parser
     */
    public void parseFile(MidLayerControl mlc) throws Exception
    {
-
       String inputFile = mlc.getInputFileName();
       this.codeTree = mlc.getCodeTree();
-      this.symbolTable = mlc.getSymbolTable();
+      getGlobalSymTab();
+      this.symbolTable = mlc.getSymbolTable(currentNestingLevel++);
 
       Scanner scanPrint = new Scanner(inputFile);
       scanPrint.scan(); //printout all the stuff in scanner first
@@ -37,8 +42,17 @@ public class Parser
       scanner.nextCharNoPrint();
       while ((token = scanner.getNextToken()) != null)
       {
+         if("()".contains(token.getValue()))
+         {
+            putToStack(token);
+         }
          //put to Symbol table
-         parseToSymbolTable(token);
+         parseToSymbolTable(token, this.symbolTable);
+         if(isBalanced())
+         {
+            symTabStack.add(this.symbolTable);
+            this.symbolTable = mlc.getSymbolTable(currentNestingLevel++);
+         }
       }
 
       scanner = new Scanner(inputFile);
@@ -62,9 +76,9 @@ public class Parser
     @param token the Token that is about to be processed and put into symtab.
     @throws Exception
     */
-   public void parseToSymbolTable(Token token) throws Exception
+   public void parseToSymbolTable(Token token, SymbolTable symTab) throws Exception
    {
-      if (this.symbolTable.symTabContains(token.getValue()))
+      if (symTab.symTabContains(token.getValue()))
       {
          //do nothing, already inside the symtab
       }
@@ -72,7 +86,7 @@ public class Parser
       else if(token.getValue().equals("define"))
       {
          token = scanner.getNextToken();
-         this.symbolTable.setSymTab(token.getValue(), "PROCEDURE");
+         symTab.setSymTab(token.getValue(), "PROCEDURE");
       }
       else if (token.getType() == Token.TokenType.WORD)
       {
@@ -82,12 +96,47 @@ public class Parser
          }
          else if (!"()".contains(token.getValue()))
          {
-            this.symbolTable.setSymTab(token.getValue(), "IDENTIFIER");
+            symTab.setSymTab(token.getValue(), "IDENTIFIER");
          }
       }
       else if (token.getType() == Token.TokenType.SYMBOL)
       {
-         this.symbolTable.setSymTab(token.getValue(), "PROCEDURE");
+         symTab.setSymTab(token.getValue(), "PROCEDURE");
       }
+   }
+
+   boolean isBalanced()
+   {
+      return parentStack.isEmpty();
+   }
+
+   void putToStack(Token token)
+   {
+      if(token.getType() == Token.TokenType.L_PAREN)
+      {
+         parentStack.push("(");
+      }
+      else
+      {
+         parentStack.pop();
+      }
+   }
+
+   public ArrayList getSymTabStack()
+   {
+      return symTabStack;
+   }
+
+   public void getGlobalSymTab()
+   {
+      this.symbolTable = new SymbolTable(currentNestingLevel);
+      this.symbolTable.setSymTab("car", "PROCEDURE");
+      this.symbolTable.setSymTab("+", "PROCEDURE");
+      this.symbolTable.setSymTab("cons", "PROCEDURE");
+      this.symbolTable.setSymTab("-", "PROCEDURE");
+      this.symbolTable.setSymTab("/", "PROCEDURE");
+      this.symbolTable.setSymTab("*", "PROCEDURE");
+      this.symbolTable.setSymTab("cdr", "PROCEDURE");
+      symTabStack.add(this.symbolTable);
    }
 }

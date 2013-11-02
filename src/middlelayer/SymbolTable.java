@@ -13,8 +13,26 @@ import java.util.TreeMap;
  */
 public class SymbolTable
 {
-   static TreeMap symbolTable = new TreeMap<>();
+   TreeMap symbolTable = new TreeMap<>();
    static Scanner scanner;
+   private int nestingLevel;
+
+   public SymbolTable(int currentNestingLevel)
+   {
+      this.nestingLevel = nestingLevel;
+   }
+
+   public int getNestingLevel()
+   {
+      return nestingLevel;
+   }
+
+   public void setNestingLevel(int nestingLevel)
+   {
+      this.nestingLevel = nestingLevel;
+   }
+
+
 
    /**
     method to print the contents of the symbol table

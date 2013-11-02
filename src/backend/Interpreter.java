@@ -1,6 +1,7 @@
 package backend;
 
 import java.io.FileNotFoundException;
+import java.util.TreeMap;
 import middlelayer.*;
 
 /**
@@ -50,7 +51,12 @@ public class Interpreter
          status = mlc.getMidLayerObjectFileNames(inputFileName);
 
          System.out.println("\nSYMBOL TABLE:");
-         mlc.getSymbolTable().printSymTab();
+         for(int i = 0; i < mlc.getSymStack().size(); i++)
+         {
+            System.out.println("\nSYMTAB " + i + " :");
+            SymbolTable symtab = (SymbolTable) mlc.getSymStack().get(i);
+            symtab.printSymTab();
+         }
 
          System.out.println("\nYOUR CODE TREE:");
          mlc.getCodeTree().printTree();
