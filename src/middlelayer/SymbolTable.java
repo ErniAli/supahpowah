@@ -32,8 +32,6 @@ public class SymbolTable
       this.nestingLevel = nestingLevel;
    }
 
-
-
    /**
     method to print the contents of the symbol table
     */
@@ -93,5 +91,10 @@ public class SymbolTable
    public TreeMap getSymTab()
    {
       return symbolTable;
+   }
+
+   public int size()
+   {
+      return symbolTable.size();
    }
 }
