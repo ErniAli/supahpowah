@@ -92,4 +92,9 @@ public class SymbolTable
    {
       return symbolTable;
    }
+
+   public int size()
+   {
+      return symbolTable.size();
+   }
 }
