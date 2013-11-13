@@ -19,7 +19,7 @@ public class SymbolTable
 
    public SymbolTable(int currentNestingLevel)
    {
-      this.nestingLevel = nestingLevel;
+      this.nestingLevel = currentNestingLevel;
    }
 
    public int getNestingLevel()

@@ -31,7 +31,7 @@ public class Parser
       String inputFile = mlc.getInputFileName();
       this.codeTree = mlc.getCodeTree();
       getGlobalSymTab();
-      this.symbolTable = mlc.getSymbolTable(currentNestingLevel++);
+      this.symbolTable = mlc.getSymbolTable(currentNestingLevel++, symTabStack);
 
       Scanner scanPrint = new Scanner(inputFile);
       scanPrint.scan(); //printout all the stuff in scanner first
@@ -50,8 +50,12 @@ public class Parser
          parseToSymbolTable(token, this.symbolTable, mlc);
          if (isBalanced(parentStack))
          {
-            symTabStack.add(this.symbolTable);
-            this.symbolTable = mlc.getSymbolTable(currentNestingLevel++);
+            if (currentNestingLevel > symTabStack.size() - 1)
+            {
+               symTabStack.add(this.symbolTable);
+            }
+            currentNestingLevel = 1;
+            this.symbolTable = mlc.getSymbolTable(currentNestingLevel++, symTabStack);
          }
       }
 
@@ -81,7 +85,11 @@ public class Parser
     */
    public void parseToSymbolTable(Token token, SymbolTable symTab, MidLayerControl mlc) throws Exception
    {
-      if (symTab.symTabContains(token.getValue()))
+      if (lookUpGlobal(token))
+      {
+         //do nothing, already in the stack
+      }
+      else if (symTab.symTabContains(token.getValue()))
       {
          //do nothing, already inside the symtab
       }
@@ -90,8 +98,11 @@ public class Parser
       {
          token = scanner.getNextToken();
          symTab.setSymTab(token.getValue(), "PROCEDURE");
-         symTabStack.add(this.symbolTable);
-         this.symbolTable = mlc.getSymbolTable(currentNestingLevel++);
+         if (currentNestingLevel > symTabStack.size() - 1)
+         {
+            symTabStack.add(this.symbolTable);
+         }
+         this.symbolTable = mlc.getSymbolTable(currentNestingLevel++, symTabStack);
       }
       else if (token.getValue().equals("lambda"))
       {
@@ -104,14 +115,20 @@ public class Parser
                symTab.setSymTab(token.getValue(), "IDENTIFIER");
                token = scanner.getNextToken();
             }
-            symTabStack.add(this.symbolTable);
-            this.symbolTable = mlc.getSymbolTable(currentNestingLevel++);
+            if (currentNestingLevel > symTabStack.size() - 1)
+            {
+               symTabStack.add(this.symbolTable);
+            }
+            this.symbolTable = mlc.getSymbolTable(currentNestingLevel++, symTabStack);
          }
          else
          {
             symTab.setSymTab(token.getValue(), "IDENTIFIER");
-            symTabStack.add(this.symbolTable);
-            this.symbolTable = mlc.getSymbolTable(currentNestingLevel++);
+            if (currentNestingLevel > symTabStack.size() - 1)
+            {
+               symTabStack.add(this.symbolTable);
+            }
+            this.symbolTable = mlc.getSymbolTable(currentNestingLevel++, symTabStack);
          }
       }
       else if (token.getValue().equals("let"))
@@ -127,26 +144,29 @@ public class Parser
             putToStack(token, letStack);
             token = scanner.getNextToken();
          }
-         while(!isBalanced(letStack))
+         while (!isBalanced(letStack))
          {
             //if not in any of the symbol tables
-            if(token.getType() != Token.TokenType.L_PAREN && token.getType() != Token.TokenType.R_PAREN)
+            if (token.getType() != Token.TokenType.L_PAREN && token.getType() != Token.TokenType.R_PAREN)
             {
-               if(!lookUpSymTabStack(token))
+               if (!lookUpSymTabStack(token))
                {
                   //put it in the symbol table
                   symTab.setSymTab(token.getValue(), "IDENTIFIER");
                }
             }
             token = scanner.getNextToken();
-            if("()".contains(token.getValue()))
+            if ("()".contains(token.getValue()))
             {
                putToStack(token, letStack);
                putToStack(token, parentStack);
             }
          }
-         symTabStack.add(this.symbolTable);
-         this.symbolTable = mlc.getSymbolTable(currentNestingLevel++);
+         if (currentNestingLevel > symTabStack.size() - 1)
+         {
+            symTabStack.add(this.symbolTable);
+         }
+         this.symbolTable = mlc.getSymbolTable(currentNestingLevel++, symTabStack);
       }
       else if (token.getType() == Token.TokenType.WORD)
       {
@@ -213,6 +233,16 @@ public class Parser
       return false;
    }
 
+   public boolean lookUpGlobal(Token token)
+   {
+      SymbolTable sym = symTabStack.get(0);
+      if (sym.symTabContains(token.getValue()))
+      {
+         return true;
+      }
+      return false;
+   }
+
    public void removeEmptyStack()
    {
       for (int i = 0; i < symTabStack.size(); i++)
@@ -224,5 +254,4 @@ public class Parser
          }
       }
    }
-
 }

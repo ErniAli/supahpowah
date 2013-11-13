@@ -74,9 +74,16 @@ public class MidLayerControl
 //      return symbolTable;
 //   }
 
-   public SymbolTable getSymbolTable(int nestingLevel)
+   public SymbolTable getSymbolTable(int nestingLevel, ArrayList<SymbolTable> symTabStack)
    {
-      symbolTable = new SymbolTable(nestingLevel);
+      if(nestingLevel < symTabStack.size() - 1)
+      {
+         symbolTable = symTabStack.get(nestingLevel);
+      }
+      else
+      {
+         symbolTable = new SymbolTable(nestingLevel);
+      }
       return symbolTable;
    }
 
